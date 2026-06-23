@@ -1,409 +1,270 @@
-📚 DevOps Networking Class Summary (Today's Session)
+# DevOps Networking Fundamentals Tasks
 
-Today you learned the foundation of networking, which is one of the most important skills for a DevOps Engineer.
+## 1. Write examples of how each layer applies to real-world scenarios
 
-1. OSI Model
+### Solution:
 
-The OSI Model explains how data travels from one computer to another.
+## Real-World Examples of OSI Model Layers
 
-7. Application
-6. Presentation
-5. Session
-4. Transport
-3. Network
-2. Data Link
-1. Physical
-Easy Understanding
+### 1. Application Layer
 
-When you open:
+**Purpose:** Provides network services to users.
+**Example:** Provides protocols like HTTP/HTTPS used in web browsers.
 
-https://google.com
+### 2. Presentation Layer
 
-The request passes through all 7 layers.
+**Purpose:** Data encryption, data compression, and data translation.
+**Example:** TLS (Transport Layer Security) encryption used in HTTPS.
 
-Layer	Purpose	Example
-Application	User interacts	HTTP, HTTPS
-Presentation	Encryption	SSL/TLS
-Session	Manages connection	Login session
-Transport	Reliable delivery	TCP, UDP
-Network	Routing	IP Address
-Data Link	Local communication	MAC Address
-Physical	Signals	Cable, WiFi
-2. TCP/IP Model
+### 3. Session Layer
 
-The actual Internet uses TCP/IP.
+**Purpose:** Session management and authentication.
+**Example:** Login session management in Gmail.
 
-Application
-Transport
-Internet
-Network Access
-Mapping
-OSI                    TCP/IP
+### 4. Transport Layer
 
-Application
-Presentation          → Application
-Session
+**Purpose:** Reliable data transfer between devices, error control, and flow control.
+**Example:** TCP (file downloading) and UDP (live streaming).
 
-Transport             → Transport
+### 5. Network Layer
 
-Network               → Internet
+**Purpose:** Best path determination for the flow of data.
+**Example:** IP addresses used for routing from a computer to a network.
 
-Data Link
-Physical              → Network Access
-3. Important Protocols and Ports
+### 6. Data Link Layer
 
-These are interview favorites.
+**Purpose:** Handles communication in a local network using MAC addresses.
+**Example:** Communication between a laptop and a router.
 
-Protocol	Purpose	Port
-SSH	Remote Login	22
-FTP	File Transfer	21
-DNS	Domain Resolution	53
-HTTP	Website Traffic	80
-HTTPS	Secure Website Traffic	443
-DHCP	Assign IP Address	67/68
-SMTP	Send Email	25
-NTP	Time Sync	123
-SNMP	Monitoring	161
-Must Memorize
-SSH   = 22
-DNS   = 53
-HTTP  = 80
-HTTPS = 443
-4. AWS Security Groups
+### 7. Physical Layer
 
-Security Groups act as a firewall for EC2 instances.
+**Purpose:** Transmission of data bits through physical devices.
+**Example:** Ethernet cable, fiber optic cable, and wireless signals.
 
-Inbound Rules
+---
 
-Traffic entering server.
+## TCP/IP Model Layers
 
-Examples:
+| TCP/IP Layer         | Purpose                                      | Real-World Example                                         |
+| -------------------- | -------------------------------------------- | ---------------------------------------------------------- |
+| Application Layer    | Provides services for applications and users | HTTP, HTTPS, DNS, FTP, SSH                                 |
+| Transport Layer      | Ensures end-to-end communication             | TCP for reliable communication, UDP for fast communication |
+| Internet Layer       | Handles addressing and routing               | IP protocol routing data across the Internet               |
+| Network Access Layer | Manages physical network communication       | Ethernet, Wi-Fi, switches, and MAC addresses               |
 
-SSH    22
-HTTP   80
-HTTPS  443
-Outbound Rules
+---
 
-Traffic leaving server.
+# 2. Create a blog, article, GitHub page, or README listing these protocols and explaining their relevance to DevOps workflows
 
-Important Point
+## Solution:
 
-Security Groups are:
+## Importance of Protocols in DevOps
 
-STATEFUL
+### 1. HTTP
 
-Meaning:
+**Port:** 80
+**Purpose:** Used for communication between web browsers and web servers.
+**Example:** Accessing a website hosted on Nginx or Apache.
 
-If incoming traffic is allowed, the response automatically goes back.
+### 2. HTTPS
 
-5. ping Command
+**Port:** 443
+**Purpose:** Same as HTTP but provides secure communication using SSL/TLS encryption.
+**Example:** Accessing secure websites such as banking applications.
 
-Command:
+### 3. SSH
 
+**Port:** 22
+**Purpose:** Securely accessing remote servers and AWS EC2 instances.
+**Example:** Managing Linux servers remotely.
+
+### 4. FTP/SFTP
+
+**Port:** 21 (FTP), 22 (SFTP)
+**Purpose:** Transferring files between systems or servers.
+**Example:** Uploading website files to a web server.
+
+### 5. DNS
+
+**Port:** 53
+**Purpose:** Converts domain names into IP addresses.
+**Example:** Resolving google.com into its server IP address.
+
+### 6. SMTP
+
+**Port:** 25
+**Purpose:** Used for email communication and mail management.
+**Example:** Sending automated notifications from applications.
+
+---
+
+# 3. Write a step-by-step guide or blog on how to create and configure Security Groups
+
+## Solution:
+
+### Step 1:
+
+Go to **EC2 Dashboard** → **Launch Instance**
+
+### Step 2:
+
+Enter the instance name:
+
+```text
+Batch_9_Server
+```
+
+### Step 3:
+
+Select:
+
+* Application and OS Image: Ubuntu
+* Instance Type: t3.micro
+
+### Step 4:
+
+Create a Key Pair:
+
+```text
+Batch9_server_key
+```
+
+### Step 5:
+
+Create a new Security Group:
+
+```text
+launch-wizard-8
+```
+
+Allow the required inbound rules:
+
+* SSH (Port 22)
+* HTTP (Port 80)
+* HTTPS (Port 443)
+
+### Step 6:
+
+Configure Storage:
+
+```text
+10 GB
+```
+
+File System:
+
+```text
+None
+```
+
+### Step 7:
+
+For beginners, do not modify **Advanced Details**.
+
+### Step 8:
+
+Keep the number of instances as:
+
+```text
+1
+```
+
+(Default)
+
+### Step 9:
+
+Click **Launch Instance**.
+
+### Step 10:
+
+Once the instance is running, connect to it using your browser or SSH.
+
+---
+
+# 4. Create a cheat sheet or short guide explaining the purpose and usage of each command
+
+## Solution:
+
+### 1. ping
+
+**Command:**
+
+```bash
 ping google.com
+```
 
-Purpose:
+**Purpose:**
+Checks connectivity between your server and Google or any other host.
 
-Check Connectivity
+---
 
-Your Output:
+### 2. traceroute
 
-27 packets transmitted
-27 received
-0% packet loss
+**Command:**
 
-Meaning:
-
-✅ Internet Working
-
-✅ Google Reachable
-
-✅ No Packet Loss
-
-Important Fields
-icmp_seq
-
-Packet Number
-
-ttl
-
-Remaining packet life
-
-time
-
-Response Time
-
-6. traceroute Command
-
-Command:
-
+```bash
 traceroute google.com
+```
 
-Purpose:
+**Purpose:**
+Finds the route through which data packets travel from the source to the destination.
 
-Shows packet route
+---
 
-Your Output:
+### 3. netstat
 
-Hop 1
-Hop 2
-Hop 3
-Google
+**Command:**
 
-Meaning:
-
-Your EC2 server reached Google in only 4 network hops.
-
-7. netstat Command
-
-Command:
-
+```bash
 netstat -tulnp
+```
 
-Purpose:
+**Purpose:**
+Displays network connections, listening ports, and routing information.
 
-Show open ports
-Your Open Ports
-Port 22
-SSH
+| Option | Meaning           |
+| ------ | ----------------- |
+| -t     | TCP connections   |
+| -u     | UDP connections   |
+| -l     | Listening ports   |
+| -n     | Show port numbers |
+| -p     | Show process IDs  |
 
-Used for:
+---
 
-Remote Login
-Port 80
-HTTP
+### 4. curl
 
-Used for:
+**Command:**
 
-Website Access
-Port 53
-DNS
-
-Used for:
-
-Domain Resolution
-8. curl Command
-
-Command:
-
+```bash
 curl https://google.com
+```
 
-Purpose:
+**Purpose:**
+Sends HTTP/HTTPS requests to a web page and retrieves the response.
 
-Send HTTP Request
-Your Output
-301 Moved
+---
 
-Meaning:
+### 5. dig
 
-Google redirected:
+**Command:**
 
-google.com
-
-to
-
-www.google.com
-curl -I
-
-Command:
-
-curl -I https://google.com
-
-Purpose:
-
-Show HTTP Headers
-
-Important Header:
-
-Location:
-https://www.google.com
-
-Meaning:
-
-Redirect destination.
-
-9. dig Command
-
-Command:
-
+```bash
 dig google.com
+```
 
-Purpose:
+**Purpose:**
+Provides detailed DNS information and DNS record details.
 
-Detailed DNS Lookup
-Important Fields
-Status
-NOERROR
+---
 
-DNS is working.
+### 6. nslookup
 
-Answer Section
-google.com
-=
-209.85.x.x
+**Command:**
 
-DNS translated domain name into IP addresses.
-
-Why Multiple IPs?
-
-Google uses:
-
-Load Balancing
-
-Many servers share traffic.
-
-10. A Record
-
-Output:
-
-google.com IN A 209.85.202.139
-
-Meaning:
-
-A Record = IPv4 Address
-11. AAAA Record
-
-Command:
-
-dig google.com AAAA
-
-Meaning:
-
-AAAA = IPv6 Address
-
-Example:
-
-2a00:1450:400b:c00::8a
-12. MX Record
-
-Command:
-
-dig google.com MX
-
-Output:
-
-smtp.google.com
-
-Meaning:
-
-Mail Server
-
-Emails for Google go there.
-
-13. nslookup
-
-Command:
-
+```bash
 nslookup google.com
+```
 
-Purpose:
-
-Simple DNS Lookup
-
-Output:
-
-Non-authoritative answer
-
-Meaning:
-
-Answer came from DNS cache.
-
-This is normal.
-
-What You Practically Verified Today
-
-From your AWS EC2 server you successfully verified:
-
-✅ Internet Connectivity
-
-✅ DNS Resolution
-
-✅ HTTP Connectivity
-
-✅ HTTPS Connectivity
-
-✅ SSH Service Running
-
-✅ Web Server Running
-
-✅ Open Ports
-
-✅ IPv4 Records
-
-✅ IPv6 Records
-
-✅ Mail Server Records
-
-✅ Network Path to Google
-
-Interview Questions You Can Now Answer
-What is the OSI Model?
-
-A conceptual model that describes how network communication occurs through seven layers.
-
-Difference between HTTP and HTTPS?
-
-HTTP is unencrypted.
-
-HTTPS uses SSL/TLS encryption.
-
-What is DNS?
-
-DNS converts domain names into IP addresses.
-
-What is the purpose of ping?
-
-To verify connectivity and measure latency.
-
-What is traceroute used for?
-
-To identify the path packets take to a destination.
-
-What is netstat used for?
-
-To view open ports and active network connections.
-
-What is an A Record?
-
-Maps a domain name to an IPv4 address.
-
-What is an MX Record?
-
-Specifies the mail server responsible for receiving emails.
-
-Today's Biggest DevOps Lesson
-
-When troubleshooting a server, always think in this order:
-
-1. Is the server reachable?
-        ↓
-      ping
-
-2. Is the route working?
-        ↓
-    traceroute
-
-3. Is the service running?
-        ↓
-     netstat
-
-4. Is the website responding?
-        ↓
-       curl
-
-5. Is DNS working?
-        ↓
-    dig/nslookup
-
-This is the same troubleshooting flow used by professional DevOps engineers during production incidents.
-
-Next Recommended Topic
-
-Tomorrow, move to:
-
-Linux File System
-Users & Groups
-Permissions (chmod, chown)
-Process Management (ps, top, kill)
-
-These are the next core DevOps foundations after networking. 🚀
+**Purpose:**
+Provides information about DNS records and domain name resolution.
