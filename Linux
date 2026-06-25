@@ -34,4 +34,6 @@ ls -l
 history
 
 ============================================================================================
-1.
+1.Use grep to find all occurrences of the word "error".
+Sol:
+
