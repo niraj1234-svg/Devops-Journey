@@ -1,1 +1,37 @@
+1.Create a user devops_user and add them to a group devops_team.
+Sol: 
+sudo groupadd devops_team
+sudo useradd -m devops_user
+sudo usermod -aG devops_team devops_user
+groups devops_user
 
+2.Set a password and grant sudo access.
+sol:
+sudo passwd devops_user
+sudo usermod -aG sudo devops_user
+groups devops_user
+
+3.Restrict SSH login for certain users in /etc/ssh/sshd_config
+sol:
+sudo nano /etc/ssh/sshd_config
+AllowUsers ubuntu devops_user
+DenyUsers testuser guest
+sudo sshd -t
+sudo systemctl restart ssh
+=============================================================================================
+
+1.Create /devops_workspace and a file project_notes.txt.
+& Set permissions:
+Owner can edit, group can read, others have no access.
+Use ls -l to verify permissions.
+sol:
+mkdir devops_workspace
+touch project_notes.txt
+ls
+chmod 740 project_notes.txt
+ls
+ls -l
+history
+
+============================================================================================
+1.
