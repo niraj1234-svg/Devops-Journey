@@ -36,4 +36,17 @@ history
 ============================================================================================
 1.Use grep to find all occurrences of the word "error".
 Sol:
+grep -i "error" Linux_2k.log
 
+2.Use awk to extract timestamps and log levels.
+sol:
+awk '{print $1, $2, $3}' Linux_2k.log
+
+3.Use sed to replace all IP addresses with [REDACTED] for security.
+sed -E 's/[0-9]{1,3}(\.[0-9]{1,3}){3}/[REDACTED]/g' Linux_2k.log
+
+4.Bonus: Find the most frequent log entry using awk or sort | uniq -c | sort -nr | head -10.
+sol:
+sort Linux_2k.log | uniq -c | sort -nr | head -10 
+
+========================================================================================================
