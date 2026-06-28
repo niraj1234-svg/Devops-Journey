@@ -18,6 +18,219 @@ AllowUsers ubuntu devops_user
 DenyUsers testuser guest
 sudo sshd -t
 sudo systemctl restart ssh
+
+# 👤 Linux User Management & SSH Configuration
+
+## Task 1: Create a User `devops_user` and Add Them to a Group `devops_team`
+
+### Commands
+
+```bash
+sudo groupadd devops_team
+```
+
+**(Use:** Creates a new Linux group named `devops_team`.)
+
+**Explanation:**
+
+* `sudo` → Runs the command with administrator (root) privileges.
+* `groupadd` → Creates a new group in Linux.
+* `devops_team` → Name of the group being created.
+
+---
+
+```bash
+sudo useradd -m devops_user
+```
+
+**(Use:** Creates a new user with a home directory.)
+
+**Explanation:**
+
+* `sudo` → Executes the command as an administrator.
+* `useradd` → Creates a new Linux user.
+* `-m` → Automatically creates the user's home directory (e.g., `/home/devops_user`).
+* `devops_user` → Name of the new user.
+
+---
+
+```bash
+sudo usermod -aG devops_team devops_user
+```
+
+**(Use:** Adds the user to the `devops_team` group.)
+
+**Explanation:**
+
+* `sudo` → Executes the command with administrator privileges.
+* `usermod` → Modifies an existing user account.
+* `-a` → Append (keeps the user in existing groups).
+* `-G` → Specifies the supplementary group.
+* `devops_team` → Group to add the user to.
+* `devops_user` → User being modified.
+
+---
+
+```bash
+groups devops_user
+```
+
+**(Use:** Displays all groups that the user belongs to.)
+
+**Explanation:**
+
+* `groups` → Lists all groups for a user.
+* `devops_user` → The user whose group membership you want to check.
+
+**Expected Output**
+
+```text
+devops_user : devops_user devops_team
+```
+
+---
+
+# Task 2: Set a Password and Grant Sudo Access
+
+### Commands
+
+```bash
+sudo passwd devops_user
+```
+
+**(Use:** Sets or changes the password for `devops_user`.)
+
+**Explanation:**
+
+* `sudo` → Runs the command with administrator privileges.
+* `passwd` → Sets or changes a user's password.
+* `devops_user` → User whose password will be set.
+
+---
+
+```bash
+sudo usermod -aG sudo devops_user
+```
+
+**(Use:** Grants administrator (sudo) privileges to the user.)
+
+**Explanation:**
+
+* `sudo` → Executes the command as an administrator.
+* `usermod` → Modifies an existing user account.
+* `-a` → Append the user to the group without removing existing groups.
+* `-G` → Specifies the supplementary group.
+* `sudo` → The administrator group in Ubuntu.
+* `devops_user` → User who will receive sudo access.
+
+---
+
+```bash
+groups devops_user
+```
+
+**(Use:** Verifies that the user has been added to the `sudo` group.)
+
+**Expected Output**
+
+```text
+devops_user : devops_user devops_team sudo
+```
+
+---
+
+# Task 3: Restrict SSH Login for Certain Users
+
+### Command
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+**(Use:** Opens the SSH server configuration file for editing.)
+
+**Explanation:**
+
+* `sudo` → Opens the file with administrator privileges.
+* `nano` → A terminal-based text editor.
+* `/etc/ssh/sshd_config` → Configuration file for the SSH server.
+
+---
+
+Inside the file, add:
+
+```text
+AllowUsers ubuntu devops_user
+```
+
+**(Use:** Allows only the listed users to log in via SSH.)
+
+**Explanation:**
+
+* `AllowUsers` → Restricts SSH access to the specified users.
+* `ubuntu` → Default Ubuntu user.
+* `devops_user` → Newly created user allowed to use SSH.
+
+---
+
+```text
+DenyUsers testuser guest
+```
+
+**(Use:** Blocks the listed users from logging in via SSH.)
+
+**Explanation:**
+
+* `DenyUsers` → Prevents the specified users from accessing the server through SSH.
+* `testuser` and `guest` → Users who are denied SSH access.
+
+---
+
+```bash
+sudo sshd -t
+```
+
+**(Use:** Checks the SSH configuration file for syntax errors.)
+
+**Explanation:**
+
+* `sudo` → Runs the command with administrator privileges.
+* `sshd` → SSH server daemon.
+* `-t` → Tests the configuration file without restarting the service.
+
+**Expected Output**
+
+If there are **no errors**, this command produces **no output**, indicating the configuration is valid.
+
+---
+
+```bash
+sudo systemctl restart ssh
+```
+
+**(Use:** Restarts the SSH service to apply the new configuration.)
+
+**Explanation:**
+
+* `sudo` → Executes the command with administrator privileges.
+* `systemctl` → Manages Linux system services.
+* `restart` → Stops and starts the service again.
+* `ssh` → Name of the SSH service.
+
+### Verify the SSH Service
+
+```bash
+sudo systemctl status ssh
+```
+
+**Expected Output**
+
+```text
+Active: active (running)
+```
+
+This confirms that the SSH service is running successfully with the new configuration.
+
 =============================================================================================
 
 1.Create /devops_workspace and a file project_notes.txt.
@@ -32,6 +245,222 @@ chmod 740 project_notes.txt
 ls
 ls -l
 history
+
+# 📁 Linux File Management & Permissions
+
+## Task: Create `/devops_workspace` and a file `project_notes.txt`
+
+### Objective
+
+Create a directory named **devops_workspace** and a file named **project_notes.txt**. Set file permissions so that:
+
+* **Owner** can read and edit the file.
+* **Group** can only read the file.
+* **Others** have no access.
+* Verify the permissions using `ls -l`.
+
+> **Note:** The correct permission for this task is **640**, not **740**.
+>
+> * **640** → Owner = Read + Write, Group = Read, Others = No access.
+> * **740** → Gives the owner execute permission and removes the group's read permission, which does **not** match the task.
+
+---
+
+## Commands
+
+```bash
+# Create a new directory named "devops_workspace"
+mkdir devops_workspace
+```
+
+**(Use:** Creates a new directory for storing project files.)
+
+**Explanation:**
+
+* `mkdir` → Creates a new directory (folder).
+* `devops_workspace` → Name of the directory being created.
+
+---
+
+```bash
+# Move inside the newly created directory
+cd devops_workspace
+```
+
+**(Use:** Changes the current working directory to `devops_workspace`.)
+
+**Explanation:**
+
+* `cd` → Change Directory.
+* `devops_workspace` → Directory you want to enter.
+
+---
+
+```bash
+# Create an empty file named "project_notes.txt"
+touch project_notes.txt
+```
+
+**(Use:** Creates a new empty text file.)
+
+**Explanation:**
+
+* `touch` → Creates a new empty file if it doesn't exist.
+* `project_notes.txt` → Name of the file.
+
+---
+
+```bash
+# Display files in the current directory
+ls
+```
+
+**(Use:** Lists all files and folders in the current directory.)
+
+**Explanation:**
+
+* `ls` → Lists the contents of the current directory.
+
+---
+
+```bash
+# Set file permissions
+# Owner = Read + Write
+# Group = Read
+# Others = No Permission
+chmod 640 project_notes.txt
+```
+
+**(Use:** Changes the permissions of the file.)
+
+**Explanation:**
+
+* `chmod` → Change file or directory permissions.
+* `640`
+
+  * `6` = Read (4) + Write (2) = **Owner**
+  * `4` = Read only = **Group**
+  * `0` = No permission = **Others**
+* `project_notes.txt` → File whose permissions are being changed.
+
+---
+
+```bash
+# Display files in the current directory
+ls
+```
+
+**(Use:** Verifies that the file still exists.)
+
+---
+
+```bash
+# Display detailed information about the file
+ls -l
+```
+
+**(Use:** Shows detailed file information, including permissions.)
+
+**Explanation:**
+
+* `ls` → Lists directory contents.
+* `-l` → Long listing format showing:
+
+  * File permissions
+  * Owner
+  * Group
+  * File size
+  * Date and time
+  * File name
+
+---
+
+```bash
+# Display previously executed commands
+history
+```
+
+**(Use:** Shows the history of commands executed in the terminal.)
+
+**Explanation:**
+
+* `history` → Displays all previously executed commands.
+
+---
+
+# Expected Output
+
+```text
+-rw-r----- 1 ubuntu ubuntu 0 Jun 28 12:30 project_notes.txt
+```
+
+### Permission Breakdown
+
+| Permission | Meaning                   |
+| ---------- | ------------------------- |
+| `-`        | Regular file              |
+| `rw-`      | Owner can Read and Write  |
+| `r--`      | Group can only Read       |
+| `---`      | Others have No Permission |
+
+---
+
+# Verification
+
+Run:
+
+```bash
+ls -l project_notes.txt
+```
+
+If the output shows:
+
+```text
+-rw-r-----
+```
+
+then the permissions are correctly configured.
+
+---
+
+# Real-World DevOps Use
+
+* Store project configuration files securely.
+* Restrict access to deployment scripts.
+* Protect application configuration files.
+* Secure log files and backup files.
+* Manage permissions on production Linux servers.
+
+---
+
+# Common Mistakes
+
+❌ Using:
+
+```bash
+chmod 740 project_notes.txt
+```
+
+This gives:
+
+* Owner → Read, Write, Execute
+* Group → Read only
+* Others → No permission
+
+The execute permission (`x`) is unnecessary for a text file.
+
+✔ Correct command:
+
+```bash
+chmod 640 project_notes.txt
+```
+
+This matches the task requirements:
+
+* Owner → Read & Write
+* Group → Read only
+* Others → No access
+
 
 ============================================================================================
 1.Use grep to find all occurrences of the word "error".
@@ -49,6 +478,234 @@ sed -E 's/[0-9]{1,3}(\.[0-9]{1,3}){3}/[REDACTED]/g' Linux_2k.log
 sol:
 sort Linux_2k.log | uniq -c | sort -nr | head -10 
 
+# 📊 Linux Log Analysis Using `grep`, `awk`, `sed`, `sort`, and `uniq`
+
+## Objective
+
+Linux log files help administrators and DevOps engineers monitor servers, troubleshoot issues, and identify security events. In this task, you'll analyze the `Linux_2k.log` file using common Linux commands.
+
+---
+
+# Task 1: Find All Occurrences of the Word **"error"**
+
+## Command
+
+```bash
+# Search for the word "error" (case-insensitive) in the log file
+grep -i "error" Linux_2k.log
+```
+
+**(Use:** Finds all lines containing the word **error**.)
+
+### Explanation
+
+* `grep` → Searches for a word or pattern inside a file.
+* `-i` → Ignores uppercase and lowercase differences (case-insensitive).
+* `"error"` → The word to search for.
+* `Linux_2k.log` → The log file being searched.
+
+---
+
+### Expected Output
+
+```text
+Jun 14 15:16:45 ERROR Unable to connect to server
+Jun 14 15:18:20 ERROR Authentication failed
+```
+
+> **Note:** The LogHub `Linux_2k.log` dataset may not contain the word **error**. If nothing is displayed, it means there are no matching entries.
+
+---
+
+### Real-World DevOps Use
+
+* Find application errors.
+* Troubleshoot failed services.
+* Monitor production server issues.
+* Investigate security incidents.
+
+---
+
+# Task 2: Extract Timestamps Using `awk`
+
+## Command
+
+```bash
+# Display only the first three columns (Month, Day, Time)
+awk '{print $1, $2, $3}' Linux_2k.log
+```
+
+**(Use:** Extracts only the timestamp from each log entry.)
+
+### Explanation
+
+* `awk` → A powerful text-processing tool.
+* `{print}` → Prints selected columns.
+* `$1` → First column (Month).
+* `$2` → Second column (Day).
+* `$3` → Third column (Time).
+* `Linux_2k.log` → Input log file.
+
+---
+
+### Expected Output
+
+```text
+Jun 14 15:16:02
+Jun 14 15:16:05
+Jun 14 15:16:08
+Jun 14 15:16:10
+```
+
+> **Note:** The `Linux_2k.log` dataset does not contain explicit log levels like **INFO**, **ERROR**, or **WARNING**. Therefore, only timestamps can be extracted directly.
+
+---
+
+### Real-World DevOps Use
+
+* Analyze when events occurred.
+* Create monitoring reports.
+* Investigate incidents based on timestamps.
+* Correlate logs across multiple servers.
+
+---
+
+# Task 3: Replace All IP Addresses with `[REDACTED]`
+
+## Command
+
+```bash
+# Replace all IPv4 addresses with [REDACTED]
+sed -E 's/[0-9]{1,3}(\.[0-9]{1,3}){3}/[REDACTED]/g' Linux_2k.log
+```
+
+**(Use:** Hides IP addresses to protect sensitive information.)
+
+### Explanation
+
+* `sed` → Stream editor used to edit text.
+* `-E` → Enables extended regular expressions.
+* `s` → Substitute command.
+* `[0-9]{1,3}` → Matches numbers between 0 and 999.
+* `(\.[0-9]{1,3}){3}` → Matches the remaining three parts of an IPv4 address.
+* `[REDACTED]` → Replacement text.
+* `g` → Replace all matches on each line.
+* `Linux_2k.log` → Input log file.
+
+---
+
+### Expected Output
+
+```text
+Connection received from [REDACTED]
+User logged in from [REDACTED]
+```
+
+---
+
+### Real-World DevOps Use
+
+* Share logs securely.
+* Protect customer information.
+* Remove sensitive data before uploading logs.
+* Maintain privacy and compliance.
+
+---
+
+# Task 4 (Bonus): Find the Most Frequent Log Entries
+
+## Command
+
+```bash
+# Display the top 10 most frequent log entries
+sort Linux_2k.log | uniq -c | sort -nr | head -10
+```
+
+**(Use:** Finds the most frequently occurring log messages.)
+
+### Explanation
+
+* `sort` → Sorts all log entries alphabetically.
+* `uniq -c` → Counts duplicate lines.
+* `sort -nr`
+
+  * `-n` → Sort numerically.
+  * `-r` → Sort in reverse order (highest count first).
+* `head -10` → Displays only the top 10 results.
+
+---
+
+### Expected Output
+
+```text
+150 Accepted password for ubuntu
+120 Failed password for root
+95 CRON Job Started
+60 sshd Session Opened
+40 User Logged Out
+```
+
+---
+
+### Real-World DevOps Use
+
+* Identify recurring system events.
+* Detect repeated login failures.
+* Find the most common application logs.
+* Troubleshoot frequently occurring issues.
+* Monitor server health and security.
+
+---
+
+# Summary
+
+| Command   | Purpose                                       |
+| --------- | --------------------------------------------- |
+| `grep`    | Search for words or patterns in a file.       |
+| `awk`     | Extract and process specific columns of text. |
+| `sed`     | Edit or replace text in a file or stream.     |
+| `sort`    | Sort text alphabetically or numerically.      |
+| `uniq -c` | Count duplicate lines.                        |
+| `head`    | Display the first few lines of output.        |
+
+---
+
+# Common Mistakes
+
+❌ Forgetting `-i` with `grep` may miss words with different letter cases.
+
+❌ Using `awk` with incorrect column numbers can produce the wrong output.
+
+❌ Forgetting the `g` flag in `sed` only replaces the first match on each line.
+
+❌ Running `uniq -c` without `sort` first may produce incorrect counts because duplicate lines must be adjacent.
+
+---
+
+# Interview Questions
+
+### Q1. What is the difference between `grep` and `awk`?
+
+**Answer:**
+
+* `grep` is used to search for patterns in text.
+* `awk` is used to process text, extract columns, and perform calculations.
+
+---
+
+### Q2. Why do we use `sed` in DevOps?
+
+**Answer:**
+`sed` is used to automate text editing, replace sensitive data, modify configuration files, and process log files.
+
+---
+
+### Q3. Why is `sort` used before `uniq -c`?
+
+**Answer:**
+`uniq` counts only consecutive duplicate lines. Sorting groups identical lines together so `uniq -c` can count them correctly.
+
+
 ========================================================================================================
 1.Create a directory /mnt/devops_data.
 Mount a new volume (or loop device for local practice).
@@ -60,6 +717,255 @@ sudo mkfs.ext4 /tmp/devops_disk.img
 sudo mount -o loop /tmp/devops_disk.img /mnt/devops_data
 df -h
 mount | grep devops_data
+# 💾 Linux Storage Management: Mounting a Loop Device
+
+## Objective
+
+In Linux, a **mount point** is a directory where a storage device becomes accessible. In this task, you'll create a directory, create a virtual disk (loop device), format it with a filesystem, mount it, and verify that it has been mounted successfully.
+
+> **Note:** A loop device is commonly used for learning and testing when you don't have an extra physical disk.
+
+---
+
+# Task 1: Create a Mount Point
+
+## Command
+
+```bash
+# Create a directory named "devops_data" inside the /mnt directory
+sudo mkdir -p /mnt/devops_data
+```
+
+**(Use:** Creates a mount point where the storage device will be attached.)
+
+### Explanation
+
+* `sudo` → Runs the command with administrator (root) privileges.
+* `mkdir` → Creates a new directory.
+* `-p` → Creates parent directories if they don't already exist.
+* `/mnt/devops_data` → Directory that will be used as the mount point.
+
+---
+
+### Expected Output
+
+No output indicates the directory was created successfully.
+
+Verify:
+
+```bash
+ls /mnt
+```
+
+Expected Output:
+
+```text
+devops_data
+```
+
+---
+
+# Task 2: Create a Virtual Disk (Loop Device)
+
+## Command
+
+```bash
+# Create a 100 MB virtual disk image
+sudo dd if=/dev/zero of=/tmp/devops_disk.img bs=1M count=100
+```
+
+**(Use:** Creates a virtual disk file that behaves like a physical storage device.)
+
+### Explanation
+
+* `sudo` → Runs the command as administrator.
+* `dd` → Copies and converts data.
+* `if=/dev/zero` → Reads zeros as input.
+* `of=/tmp/devops_disk.img` → Creates the output file.
+* `bs=1M` → Uses a block size of 1 MB.
+* `count=100` → Creates 100 blocks (100 MB total).
+
+---
+
+### Expected Output
+
+```text
+100+0 records in
+100+0 records out
+104857600 bytes copied
+```
+
+---
+
+# Task 3: Create an ext4 Filesystem
+
+## Command
+
+```bash
+# Format the virtual disk with the ext4 filesystem
+sudo mkfs.ext4 /tmp/devops_disk.img
+```
+
+**(Use:** Formats the virtual disk so Linux can store files on it.)
+
+### Explanation
+
+* `sudo` → Runs the command with administrator privileges.
+* `mkfs.ext4` → Creates an ext4 filesystem.
+* `/tmp/devops_disk.img` → The virtual disk image being formatted.
+
+---
+
+### Expected Output
+
+```text
+Creating filesystem with ...
+Filesystem UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
+
+---
+
+# Task 4: Mount the Virtual Disk
+
+## Command
+
+```bash
+# Mount the virtual disk to the mount point
+sudo mount -o loop /tmp/devops_disk.img /mnt/devops_data
+```
+
+**(Use:** Attaches the virtual disk to the mount point.)
+
+### Explanation
+
+* `sudo` → Runs the command as administrator.
+* `mount` → Mounts a filesystem.
+* `-o loop` → Uses the file as a loop device.
+* `/tmp/devops_disk.img` → Virtual disk image.
+* `/mnt/devops_data` → Mount point.
+
+---
+
+### Expected Output
+
+No output indicates the mount was successful.
+
+---
+
+# Task 5: Verify Disk Usage
+
+## Command
+
+```bash
+# Display mounted filesystems and available disk space
+df -h
+```
+
+**(Use:** Shows mounted filesystems and their disk usage in a human-readable format.)
+
+### Explanation
+
+* `df` → Displays disk space usage.
+* `-h` → Shows sizes in KB, MB, or GB.
+
+---
+
+### Expected Output
+
+```text
+Filesystem              Size  Used Avail Use% Mounted on
+/tmp/devops_disk.img    97M  2.0M   90M   3% /mnt/devops_data
+```
+
+---
+
+# Task 6: Verify the Mount Point
+
+## Command
+
+```bash
+# Display only the mounted filesystem related to devops_data
+mount | grep devops_data
+```
+
+**(Use:** Confirms that the virtual disk is mounted.)
+
+### Explanation
+
+* `mount` → Lists all mounted filesystems.
+* `|` → Sends the output of one command to another.
+* `grep` → Searches for a specific word.
+* `devops_data` → Filters the output to show only the required mount.
+
+---
+
+### Expected Output
+
+```text
+/tmp/devops_disk.img on /mnt/devops_data type ext4 (rw,relatime)
+```
+
+---
+
+# Verification
+
+Run:
+
+```bash
+df -h
+mount | grep devops_data
+```
+
+If you see `/mnt/devops_data` in both outputs, the mount was successful.
+
+---
+
+# Real-World DevOps Use
+
+* Mount additional AWS EBS volumes.
+* Attach Azure Managed Disks.
+* Configure storage for Docker and Kubernetes.
+* Mount backup drives.
+* Create testing environments using loop devices.
+* Manage persistent storage on Linux servers.
+
+---
+
+# Common Mistakes
+
+❌ Forgetting to create the mount point before mounting.
+
+❌ Trying to mount the disk before formatting it.
+
+❌ Using the wrong mount path.
+
+❌ Forgetting `sudo`, which results in **Permission denied** errors.
+
+---
+
+# Interview Questions
+
+### Q1. What is a mount point?
+
+**Answer:**
+A mount point is a directory where a storage device or filesystem is attached so that users can access its contents.
+
+---
+
+### Q2. What is a loop device?
+
+**Answer:**
+A loop device allows a regular file to be treated like a physical disk. It is commonly used for testing and learning without requiring additional hardware.
+
+---
+
+### Q3. What is the difference between `df` and `mount`?
+
+**Answer:**
+
+* `df` shows disk usage and available space.
+* `mount` shows all mounted filesystems and where they are mounted.
+
 ===========================================================================================================
 1.Task:
 Start a background process (ping google.com > ping_test.log &).
@@ -74,6 +980,302 @@ htop
 pkill ping
 ps -ef | grep ping
 jobs
+
+# ⚙️ Linux Process Management & Monitoring
+
+## Objective
+
+A **process** is a running program in Linux. DevOps engineers monitor processes to check whether applications and services are running correctly, identify resource usage, and stop unwanted or stuck processes. In this task, you'll start a background process, monitor it using different tools, and then stop it safely.
+
+---
+
+# Task: Start a Background Process
+
+## Command
+
+```bash
+# Start the ping command in the background and save the output to a file
+ping google.com > ping_test.log &
+```
+
+**(Use:** Starts the `ping` command in the background and stores the output in `ping_test.log`.)
+
+### Explanation
+
+* `ping` → Sends network packets to check connectivity.
+* `google.com` → Destination host.
+* `>` → Redirects the output to a file.
+* `ping_test.log` → File where the ping results are stored.
+* `&` → Runs the command in the background, allowing you to continue using the terminal.
+
+---
+
+### Expected Output
+
+```text
+[1] 2456
+```
+
+* `[1]` → Job number.
+* `2456` → Process ID (PID).
+
+---
+
+# Task: View Background Jobs
+
+## Command
+
+```bash
+# Display all background jobs running in the current terminal
+jobs
+```
+
+**(Use:** Shows all background jobs running in the current shell.)
+
+### Explanation
+
+* `jobs` → Lists background jobs started from the current terminal.
+
+---
+
+### Expected Output
+
+```text
+[1]+ Running    ping google.com > ping_test.log &
+```
+
+---
+
+# Task: Monitor the Process Using `ps`
+
+## Command
+
+```bash
+# Display the ping process currently running
+ps -ef | grep ping
+```
+
+**(Use:** Displays information about the running `ping` process.)
+
+### Explanation
+
+* `ps` → Displays running processes.
+* `-e` → Shows all processes.
+* `-f` → Displays detailed information (PID, PPID, user, etc.).
+* `|` → Sends the output of one command to another.
+* `grep` → Searches for a specific keyword.
+* `ping` → Filters the output to show only the ping process.
+
+---
+
+### Expected Output
+
+```text
+ubuntu   2456  1234  0 10:30 pts/0 00:00:00 ping google.com
+```
+
+---
+
+# Task: Monitor the Process Using `top`
+
+## Command
+
+```bash
+# Display live system processes and resource usage
+top
+```
+
+**(Use:** Shows CPU, memory, and running processes in real time.)
+
+### Explanation
+
+* `top` → Displays a live view of running processes and system resource usage.
+
+> Press **q** to quit `top`.
+
+---
+
+### Expected Output
+
+You will see a screen showing:
+
+* Running processes
+* CPU usage
+* Memory usage
+* Load average
+* Process IDs (PIDs)
+
+---
+
+# Task: Monitor the Process Using `htop`
+
+## Command
+
+```bash
+# Display running processes using an interactive interface
+htop
+```
+
+**(Use:** Provides an interactive and user-friendly process monitor.)
+
+### Explanation
+
+* `htop` → An improved version of `top` with colors and interactive controls.
+
+> Press **F10** to exit.
+
+> If `htop` is not installed:
+
+```bash
+sudo apt install htop
+```
+
+---
+
+### Expected Output
+
+A colorful interactive screen showing:
+
+* Running processes
+* CPU usage
+* Memory usage
+* Process tree
+* Search and filter options
+
+---
+
+# Task: Kill the Process
+
+## Command
+
+```bash
+# Stop all running ping processes
+pkill ping
+```
+
+**(Use:** Terminates all processes named `ping`.)
+
+### Explanation
+
+* `pkill` → Kills processes by their name.
+* `ping` → Name of the process to stop.
+
+---
+
+### Expected Output
+
+No output indicates the process was terminated successfully.
+
+---
+
+# Task: Verify the Process Is Stopped
+
+## Command
+
+```bash
+# Check whether the ping process is still running
+ps -ef | grep ping
+```
+
+**(Use:** Verifies that the process has been terminated.)
+
+### Explanation
+
+If only the `grep` command appears, the `ping` process has been stopped successfully.
+
+---
+
+### Expected Output
+
+```text
+ubuntu  2560  2555  0 10:35 pts/0 00:00:00 grep --color=auto ping
+```
+
+This means the `ping` process is no longer running.
+
+---
+
+## Check Background Jobs Again
+
+```bash
+# Display the status of background jobs
+jobs
+```
+
+**Expected Output**
+
+```text
+[1]+ Done    ping google.com > ping_test.log
+```
+
+or
+
+```text
+No jobs
+```
+
+---
+
+# Verification
+
+Run:
+
+```bash
+jobs
+ps -ef | grep ping
+```
+
+If the `ping` process no longer appears, the task is complete.
+
+---
+
+# Real-World DevOps Use
+
+* Monitor web servers such as Nginx and Apache.
+* Check if Docker containers are running.
+* Monitor Jenkins, MySQL, or PostgreSQL processes.
+* Stop stuck or unwanted services.
+* Troubleshoot high CPU or memory usage on production servers.
+
+---
+
+# Common Mistakes
+
+❌ Forgetting to use `&`, causing the terminal to remain occupied by the `ping` command.
+
+❌ Killing the wrong process by using an incorrect PID.
+
+❌ Forgetting to verify whether the process has actually stopped.
+
+❌ Closing the terminal without stopping important background processes.
+
+---
+
+# Interview Questions
+
+### Q1. What is a process in Linux?
+
+**Answer:**
+A process is a program that is currently running on the operating system.
+
+---
+
+### Q2. What is the difference between `top` and `htop`?
+
+**Answer:**
+
+* `top` is the default Linux process monitor.
+* `htop` provides a more interactive, colorful, and user-friendly interface.
+
+---
+
+### Q3. What is the difference between `kill` and `pkill`?
+
+**Answer:**
+
+* `kill` terminates a process using its **PID (Process ID)**.
+* `pkill` terminates processes using their **process name**.
+
 ===========================================================================================================
 1.Write a shell script to back up /devops_workspace as backup_$(date +%F).tar.gz.
 Save it in /backups and schedule it using cron.
@@ -91,6 +1293,390 @@ ls -lh /backups
 crontab -e
 0 2 * * * /home/ubuntu/backup.sh
 crontab -l
+
+# 📦 Linux Shell Scripting: Backup Automation Using Cron
+
+## Objective
+
+Backing up important files is one of the most common tasks in DevOps. In this task, you will create a shell script that compresses the `/devops_workspace` directory into a `.tar.gz` archive, stores it in the `/backups` directory, displays a success message in green, and schedules the backup to run automatically every day using **Cron**.
+
+---
+
+# Task 1: Create the Backup Directory
+
+## Command
+
+```bash
+# Create the backup directory if it does not already exist
+sudo mkdir -p /backups
+```
+
+**(Use:** Creates a directory where backup files will be stored.)
+
+### Explanation
+
+* `sudo` → Runs the command with administrator (root) privileges.
+* `mkdir` → Creates a new directory.
+* `-p` → Creates the directory only if it doesn't already exist.
+* `/backups` → Directory where backup files will be saved.
+
+---
+
+### Expected Output
+
+No output means the directory was created successfully.
+
+Verify:
+
+```bash
+ls /
+```
+
+Output:
+
+```text
+backups
+```
+
+---
+
+# Task 2: Create the Backup Script
+
+## Command
+
+```bash
+# Open the Vim editor to create a shell script
+vim backup.sh
+```
+
+**(Use:** Creates and edits the shell script.)
+
+### Explanation
+
+* `vim` → Opens the Vim text editor.
+* `backup.sh` → Name of the shell script.
+
+---
+
+## Add the Following Script
+
+```bash
+#!/bin/bash
+
+# Create the backup directory if it doesn't exist
+mkdir -p /backups
+
+# Create a compressed backup of /devops_workspace
+tar -czf /backups/backup_$(date +%F).tar.gz /devops_workspace
+
+# Display a success message in green
+echo -e "\e[32mBackup completed successfully!\e[0m"
+```
+
+---
+
+### Script Explanation
+
+#### Line 1
+
+```bash
+#!/bin/bash
+```
+
+**(Use:** Specifies that the script should be executed using the Bash shell.)
+
+---
+
+#### Line 2
+
+```bash
+mkdir -p /backups
+```
+
+**(Use:** Ensures the backup directory exists before creating the backup.)
+
+---
+
+#### Line 3
+
+```bash
+tar -czf /backups/backup_$(date +%F).tar.gz /devops_workspace
+```
+
+**(Use:** Creates a compressed backup archive.)
+
+### Explanation
+
+* `tar` → Creates or extracts archive files.
+* `-c` → Create a new archive.
+* `-z` → Compress the archive using Gzip.
+* `-f` → Specifies the output file name.
+* `backup_$(date +%F).tar.gz` → Creates a file with the current date, for example:
+
+  * `backup_2026-06-28.tar.gz`
+* `/devops_workspace` → Directory being backed up.
+
+---
+
+#### Line 4
+
+```bash
+echo -e "\e[32mBackup completed successfully!\e[0m"
+```
+
+**(Use:** Displays a success message in green.)
+
+### Explanation
+
+* `echo` → Prints text to the terminal.
+* `-e` → Enables special escape sequences.
+* `\e[32m` → Changes the text color to green.
+* `\e[0m` → Resets the terminal color to the default.
+
+---
+
+# Task 3: Make the Script Executable
+
+## Command
+
+```bash
+# Give execute permission to the shell script
+chmod +x backup.sh
+```
+
+**(Use:** Allows the script to be executed.)
+
+### Explanation
+
+* `chmod` → Changes file permissions.
+* `+x` → Adds execute permission.
+* `backup.sh` → Script file.
+
+---
+
+# Task 4: Run the Backup Script
+
+## Command
+
+```bash
+# Execute the backup script
+sudo ./backup.sh
+```
+
+**(Use:** Runs the backup script.)
+
+### Explanation
+
+* `sudo` → Runs the script with administrator privileges.
+* `./` → Executes the script from the current directory.
+* `backup.sh` → Script name.
+
+---
+
+### Expected Output
+
+```text
+Backup completed successfully!
+```
+
+The message will appear in **green**.
+
+---
+
+# Task 5: Verify the Backup
+
+## Command
+
+```bash
+# Display backup files in the /backups directory
+ls -lh /backups
+```
+
+**(Use:** Verifies that the backup archive was created.)
+
+### Explanation
+
+* `ls` → Lists files.
+* `-l` → Shows detailed information.
+* `-h` → Displays file sizes in a human-readable format (KB, MB, GB).
+
+---
+
+### Expected Output
+
+```text
+-rw-r--r-- 1 root root 12M Jun 28 12:30 backup_2026-06-28.tar.gz
+```
+
+---
+
+# Task 6: Schedule the Backup Using Cron
+
+## Command
+
+```bash
+# Open the user's cron table for editing
+crontab -e
+```
+
+**(Use:** Opens the Cron editor.)
+
+### Explanation
+
+* `crontab` → Manages scheduled tasks.
+* `-e` → Edit the current user's cron jobs.
+
+---
+
+## Add the Following Cron Job
+
+```cron
+0 2 * * * /home/ubuntu/backup.sh
+```
+
+**(Use:** Runs the backup script every day at **2:00 AM**.)
+
+### Cron Format
+
+```text
+Minute Hour Day Month DayOfWeek Command
+```
+
+For:
+
+```cron
+0 2 * * * /home/ubuntu/backup.sh
+```
+
+* `0` → Minute (00)
+* `2` → Hour (2 AM)
+* `*` → Every day
+* `*` → Every month
+* `*` → Every day of the week
+
+---
+
+# Task 7: Verify the Cron Job
+
+## Command
+
+```bash
+# Display all scheduled cron jobs
+crontab -l
+```
+
+**(Use:** Lists all cron jobs for the current user.)
+
+### Explanation
+
+* `crontab` → Cron table manager.
+* `-l` → Lists scheduled tasks.
+
+---
+
+### Expected Output
+
+```cron
+0 2 * * * /home/ubuntu/backup.sh
+```
+
+---
+
+# Verification
+
+Run the following commands:
+
+```bash
+sudo ./backup.sh
+
+ls -lh /backups
+
+crontab -l
+```
+
+If:
+
+* A `.tar.gz` backup file appears in `/backups`
+* The success message is displayed in green
+* The cron job is listed
+
+then the task has been completed successfully.
+
+---
+
+# Real-World DevOps Use
+
+* Automate server backups.
+* Back up application configuration files.
+* Create daily database backups.
+* Archive log files.
+* Schedule maintenance tasks.
+* Automate repetitive Linux administration tasks.
+
+---
+
+# Common Mistakes
+
+❌ Forgetting to make the script executable:
+
+```bash
+chmod +x backup.sh
+```
+
+---
+
+❌ Using the wrong path in the cron job.
+
+Always provide the **full path** to the script.
+
+---
+
+❌ Forgetting to create the `/backups` directory before running the script.
+
+---
+
+❌ Forgetting to use `sudo` if the script requires administrator privileges.
+
+---
+
+# Interview Questions
+
+### Q1. What is a shell script?
+
+**Answer:**
+A shell script is a text file containing Linux commands that are executed automatically by the shell.
+
+---
+
+### Q2. What is Cron?
+
+**Answer:**
+Cron is a Linux scheduler used to run commands or scripts automatically at specified times.
+
+---
+
+### Q3. What does `tar -czf` mean?
+
+**Answer:**
+
+* `-c` → Create a new archive.
+* `-z` → Compress using Gzip.
+* `-f` → Specify the archive file name.
+
+---
+
+### Q4. Why do we use `chmod +x`?
+
+**Answer:**
+It gives execute permission so that the shell script can be run as a program.
+
+---
+
+### Q5. Why should backups be automated?
+
+**Answer:**
+Automated backups reduce manual work, protect important data, and ensure recovery is possible if files are lost or corrupted.
+
 =============================================================================================================
 1.Find the top 5 most common log messages in Linux_2k.log using awk and sort.
 Use find to list all files modified in the last 7 days.
@@ -103,3 +1689,309 @@ echo "ERROR and WARNING Logs"
 grep -Ei "ERROR|WARNING" Linux_2k.log
 chmod +x log_filter.sh
 ./log_filter.sh
+# 📊 Advanced Linux Log Analysis & File Search
+
+## Objective
+
+Log analysis is an essential DevOps skill used to troubleshoot applications, monitor servers, and identify security issues. In this task, you'll find the most common log messages, search for recently modified files, and create a shell script to filter `ERROR` and `WARNING` log entries.
+
+> **Note:** The `Linux_2k.log` dataset from LogHub usually does **not** contain explicit `ERROR` or `WARNING` log levels. If your script produces no output, it means those keywords are not present in the log file.
+
+---
+
+# Task 1: Find the Top 5 Most Common Log Messages
+
+## Command
+
+```bash
+# Display the top 5 most frequent log messages
+sort Linux_2k.log | uniq -c | sort -nr | head -5
+```
+
+**(Use:** Finds the five most frequently occurring log messages.)
+
+### Explanation
+
+* `sort` → Sorts all log entries alphabetically so duplicate lines are grouped together.
+* `uniq -c` → Counts how many times each unique log entry appears.
+* `sort -nr`
+
+  * `-n` → Sort numerically.
+  * `-r` → Reverse the order so the highest counts appear first.
+* `head -5` → Displays only the first five results.
+
+---
+
+### Expected Output
+
+```text
+150 Accepted password for ubuntu
+120 Failed password for root
+95 CRON Job Started
+60 sshd Session Opened
+40 User Logged Out
+```
+
+---
+
+### Real-World DevOps Use
+
+* Identify repeated application errors.
+* Detect frequent login failures.
+* Monitor recurring system events.
+* Analyze server activity for performance and security.
+
+---
+
+# Task 2: List All Files Modified in the Last 7 Days
+
+## Command
+
+```bash
+# Find all files modified within the last 7 days
+sudo find / -type f -mtime -7
+```
+
+**(Use:** Searches the system for files that have been modified in the last seven days.)
+
+### Explanation
+
+* `sudo` → Runs the command with administrator privileges.
+* `find` → Searches for files and directories.
+* `/` → Starts searching from the root directory.
+* `-type f` → Searches only for files.
+* `-mtime -7` → Finds files modified within the last 7 days.
+
+---
+
+### Expected Output
+
+```text
+/home/ubuntu/project/report.txt
+/etc/nginx/nginx.conf
+/var/log/syslog
+```
+
+---
+
+### Real-World DevOps Use
+
+* Find recently modified configuration files.
+* Track deployment changes.
+* Locate updated log files.
+* Audit system activity after maintenance.
+
+---
+
+# Task 3: Create a Shell Script to Display Only ERROR and WARNING Logs
+
+## Step 1: Create the Script
+
+### Command
+
+```bash
+# Open the Vim editor and create a new shell script
+vim log_filter.sh
+```
+
+**(Use:** Creates a shell script for filtering log messages.)
+
+### Explanation
+
+* `vim` → Opens the Vim text editor.
+* `log_filter.sh` → Name of the shell script.
+
+---
+
+## Step 2: Add the Following Script
+
+```bash
+#!/bin/bash
+
+# Display a heading
+echo "ERROR and WARNING Logs"
+
+# Search for ERROR and WARNING messages
+grep -Ei "ERROR|WARNING" Linux_2k.log
+```
+
+---
+
+### Script Explanation
+
+#### Line 1
+
+```bash
+#!/bin/bash
+```
+
+**(Use:** Specifies that the script should be executed using the Bash shell.)
+
+---
+
+#### Line 2
+
+```bash
+echo "ERROR and WARNING Logs"
+```
+
+**(Use:** Prints a title before displaying the filtered log entries.)
+
+### Explanation
+
+* `echo` → Prints text to the terminal.
+
+---
+
+#### Line 3
+
+```bash
+grep -Ei "ERROR|WARNING" Linux_2k.log
+```
+
+**(Use:** Displays only log entries containing `ERROR` or `WARNING`.)
+
+### Explanation
+
+* `grep` → Searches for text patterns.
+* `-E` → Enables extended regular expressions.
+* `-i` → Makes the search case-insensitive.
+* `"ERROR|WARNING"` → Searches for either `ERROR` or `WARNING`.
+* `Linux_2k.log` → Input log file.
+
+---
+
+## Step 3: Make the Script Executable
+
+### Command
+
+```bash
+# Give execute permission to the shell script
+chmod +x log_filter.sh
+```
+
+**(Use:** Allows the script to be executed.)
+
+### Explanation
+
+* `chmod` → Changes file permissions.
+* `+x` → Adds execute permission.
+* `log_filter.sh` → Script file.
+
+---
+
+## Step 4: Run the Script
+
+### Command
+
+```bash
+# Execute the shell script
+./log_filter.sh
+```
+
+**(Use:** Runs the log filtering script.)
+
+### Explanation
+
+* `./` → Executes a file from the current directory.
+* `log_filter.sh` → Name of the script.
+
+---
+
+### Expected Output
+
+```text
+ERROR and WARNING Logs
+
+ERROR Failed to connect to database
+WARNING Disk space is low
+```
+
+> **Note:** If no log entries are displayed, it simply means that the `Linux_2k.log` file does not contain `ERROR` or `WARNING` messages.
+
+---
+
+# Verification
+
+Run:
+
+```bash
+chmod +x log_filter.sh
+./log_filter.sh
+```
+
+If the script executes without errors and displays matching log entries (or only the heading if none exist), then the task has been completed successfully.
+
+---
+
+# Real-World DevOps Use
+
+* Filter application logs for critical issues.
+* Monitor production servers.
+* Detect system warnings before failures occur.
+* Troubleshoot deployment and service problems.
+* Automate log analysis during CI/CD pipelines.
+
+---
+
+# Common Mistakes
+
+❌ Forgetting to make the script executable.
+
+```bash
+chmod +x log_filter.sh
+```
+
+---
+
+❌ Forgetting the `-i` option in `grep`, which causes the search to miss words with different letter cases.
+
+---
+
+❌ Running the script from a different directory where `Linux_2k.log` is not present.
+
+---
+
+❌ Forgetting to include the Bash shebang (`#!/bin/bash`) at the top of the script.
+
+---
+
+# Interview Questions
+
+### Q1. Why do we use `sort` before `uniq -c`?
+
+**Answer:**
+`uniq` only counts consecutive duplicate lines. `sort` groups identical lines together so `uniq -c` can count them correctly.
+
+---
+
+### Q2. What does `find -mtime -7` mean?
+
+**Answer:**
+It searches for files that were modified within the last **7 days**.
+
+---
+
+### Q3. What is the purpose of `grep -Ei`?
+
+**Answer:**
+
+* `-E` enables extended regular expressions.
+* `-i` performs a case-insensitive search.
+
+---
+
+### Q4. Why do we use shell scripts in DevOps?
+
+**Answer:**
+Shell scripts automate repetitive tasks such as backups, log analysis, deployments, monitoring, and server maintenance.
+
+---
+
+### Q5. What is the difference between `head` and `tail`?
+
+**Answer:**
+
+* `head` displays the first few lines of a file.
+* `tail` displays the last few lines of a file.
+
