@@ -50,3 +50,56 @@ sol:
 sort Linux_2k.log | uniq -c | sort -nr | head -10 
 
 ========================================================================================================
+1.Create a directory /mnt/devops_data.
+Mount a new volume (or loop device for local practice).
+Verify using df -h and mount | grep devops_data.
+sol:
+sudo mkdir -p /mnt/devops_data
+sudo dd if=/dev/zero of=/tmp/devops_disk.img bs=1M count=100
+sudo mkfs.ext4 /tmp/devops_disk.img
+sudo mount -o loop /tmp/devops_disk.img /mnt/devops_data
+df -h
+mount | grep devops_data
+===========================================================================================================
+1.Task:
+Start a background process (ping google.com > ping_test.log &).
+Use ps, top, and htop to monitor it.
+Kill the process and verify it's gone.
+sol:
+ping google.com > ping_test.log &
+jobs
+ps -ef | grep ping
+top
+htop
+pkill ping
+ps -ef | grep ping
+jobs
+===========================================================================================================
+1.Write a shell script to back up /devops_workspace as backup_$(date +%F).tar.gz.
+Save it in /backups and schedule it using cron.
+Make the script display a success message in green text using echo -e.
+sol:
+sudo mkdir -p /backups
+vim backup.sh
+#!/bin/bash
+mkdir -p /backups
+tar -czf /backups/backup_$(date +%F).tar.gz /devops_workspace
+echo -e "\e[32mBackup completed successfully!\e[0m"
+chmod +x backup.sh
+sudo ./backup.sh
+ls -lh /backups
+crontab -e
+0 2 * * * /home/ubuntu/backup.sh
+crontab -l
+=============================================================================================================
+1.Find the top 5 most common log messages in Linux_2k.log using awk and sort.
+Use find to list all files modified in the last 7 days.
+Write a script that extracts and displays only ERROR and WARNING logs from Linux_2k.log.
+sol:
+sort Linux_2k.log | uniq -c | sort -nr | head -5
+sudo find / -type f -mtime -7
+vim log_filter.sh
+echo "ERROR and WARNING Logs"
+grep -Ei "ERROR|WARNING" Linux_2k.log
+chmod +x log_filter.sh
+./log_filter.sh
