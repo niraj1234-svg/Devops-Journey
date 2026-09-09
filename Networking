@@ -1,274 +1,35 @@
-# DevOps Networking Fundamentals Tasks
+1. OSI & TCP/IP Models
+Studied all 7 layers of the OSI model.
+Understood how each layer is used in real-world networking.
+Learned the 4 layers of the TCP/IP model and common protocols used in each.
+2. Protocols & Ports
+
+Learned the basics of:
+
+HTTP – 80
+HTTPS – 443
+SSH – 22
+FTP – 21
+SFTP – 22
+DNS – 53
+SMTP – 25
+
+Also understood where these protocols are useful in DevOps.
+
+3. AWS EC2 & Security Groups
+Launched an Ubuntu EC2 instance.
+Created a key pair and Security Group.
+Configured basic inbound rules for SSH, HTTP and HTTPS.
+Connected to the EC2 server.
+4. Networking Commands
+
+Practiced some important commands:
 
-## 1. Write examples of how each layer applies to real-world scenarios
-
-### Solution:
-
-## Real-World Examples of OSI Model Layers
-
-### 1. Application Layer
-
-**Purpose:** Provides network services to users.
-**Example:** Provides protocols like HTTP/HTTPS used in web browsers.
-
-### 2. Presentation Layer
-
-**Purpose:** Data encryption, data compression, and data translation.
-**Example:** TLS (Transport Layer Security) encryption used in HTTPS.
-
-### 3. Session Layer
-
-**Purpose:** Session management and authentication.
-**Example:** Login session management in Gmail.
-
-### 4. Transport Layer
-
-**Purpose:** Reliable data transfer between devices, error control, and flow control.
-**Example:** TCP (file downloading) and UDP (live streaming).
-
-### 5. Network Layer
-
-**Purpose:** Best path determination for the flow of data.
-**Example:** IP addresses used for routing from a computer to a network.
-
-### 6. Data Link Layer
-
-**Purpose:** Handles communication in a local network using MAC addresses.
-**Example:** Communication between a laptop and a router.
-
-### 7. Physical Layer
-
-**Purpose:** Transmission of data bits through physical devices.
-**Example:** Ethernet cable, fiber optic cable, and wireless signals.
-
----
-
-## TCP/IP Model Layers
-
-| TCP/IP Layer         | Purpose                                      | Real-World Example                                         |
-| -------------------- | -------------------------------------------- | ---------------------------------------------------------- |
-| Application Layer    | Provides services for applications and users | HTTP, HTTPS, DNS, FTP, SSH                                 |
-| Transport Layer      | Ensures end-to-end communication             | TCP for reliable communication, UDP for fast communication |
-| Internet Layer       | Handles addressing and routing               | IP protocol routing data across the Internet               |
-| Network Access Layer | Manages physical network communication       | Ethernet, Wi-Fi, switches, and MAC addresses               |
-
----
-
-# 2. Create a blog, article, GitHub page, or README listing these protocols and explaining their relevance to DevOps workflows
-
-## Solution:
-
-## Importance of Protocols in DevOps
-
-### 1. HTTP
-
-**Port:** 80
-**Purpose:** Used for communication between web browsers and web servers.
-**Example:** Accessing a website hosted on Nginx or Apache.
-
-### 2. HTTPS
-
-**Port:** 443
-**Purpose:** Same as HTTP but provides secure communication using SSL/TLS encryption.
-**Example:** Accessing secure websites such as banking applications.
-
-### 3. SSH
-
-**Port:** 22
-**Purpose:** Securely accessing remote servers and AWS EC2 instances.
-**Example:** Managing Linux servers remotely.
-
-### 4. FTP/SFTP
-
-**Port:** 21 (FTP), 22 (SFTP)
-**Purpose:** Transferring files between systems or servers.
-**Example:** Uploading website files to a web server.
-
-### 5. DNS
-
-**Port:** 53
-**Purpose:** Converts domain names into IP addresses.
-**Example:** Resolving google.com into its server IP address.
-
-### 6. SMTP
-
-**Port:** 25
-**Purpose:** Used for email communication and mail management.
-**Example:** Sending automated notifications from applications.
-
----
-
-# 3. Write a step-by-step guide or blog on how to create and configure Security Groups
-
-## Solution:
-
-### Step 1:
-
-Go to **EC2 Dashboard** → **Launch Instance**
-
-### Step 2:
-
-Enter the instance name:
-
-```text
-Batch_9_Server
-```
-
-### Step 3:
-
-Select:
-
-* Application and OS Image: Ubuntu
-* Instance Type: t3.micro
-
-### Step 4:
-
-Create a Key Pair:
-
-```text
-Batch9_server_key
-```
-
-### Step 5:
-
-Create a new Security Group:
-
-```text
-launch-wizard-8
-```
-
-Allow the required inbound rules:
-
-* SSH (Port 22)
-* HTTP (Port 80)
-* HTTPS (Port 443)
-
-### Step 6:
-
-Configure Storage:
-
-```text
-10 GB
-```
-
-File System:
-
-```text
-None
-```
-
-### Step 7:
-
-For beginners, do not modify **Advanced Details**.
-
-### Step 8:
-
-Keep the number of instances as:
-
-```text
-1
-```
-
-(Default)
-
-### Step 9:
-
-Click **Launch Instance**.
-
-### Step 10:
-
-Once the instance is running, connect to it using your browser or SSH.
-
----
-
-# 4. Create a cheat sheet or short guide explaining the purpose and usage of each command
-
-## Solution:
-
-### 1. ping
-
-**Command:**
-
-```bash
 ping google.com
-```
-
-**Purpose:**
-Checks connectivity between your server and Google or any other host.
-
----
-
-### 2. traceroute
-
-**Command:**
-
-```bash
 traceroute google.com
-```
-
-**Purpose:**
-Finds the route through which data packets travel from the source to the destination.
-
----
-
-### 3. netstat
-
-**Command:**
-
-```bash
 netstat -tulnp
-```
-
-**Purpose:**
-Displays network connections, listening ports, and routing information.
-
-| Option | Meaning           |
-| ------ | ----------------- |
-| -t     | TCP connections   |
-| -u     | UDP connections   |
-| -l     | Listening ports   |
-| -n     | Show port numbers |
-| -p     | Show process IDs  |
-
----
-
-### 4. curl
-
-**Command:**
-
-```bash
 curl https://google.com
-```
-
-**Purpose:**
-Sends HTTP/HTTPS requests to a web page and retrieves the response.
-
----
-
-### 5. dig
-
-**Command:**
-
-```bash
 dig google.com
-```
-
-**Purpose:**
-Provides detailed DNS information and DNS record details.
-
----
-
-### 6. nslookup
-
-**Command:**
-
-```bash
 nslookup google.com
-```
 
-**Purpose:**
-Provides information about DNS records and domain name resolution.
-
-
-
-
+These helped me understand connectivity, routes, open ports, HTTP requests and DNS resolution.
